@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.header {
+    background-color: #0088cc;
+    /* Telegram-like color */
+    color: white;
+}
+
+.sidebar {
+    background-color: #f5f5f5;
+}
+
+.chat-window {
+    background-color: #e5ddd5;
+}
