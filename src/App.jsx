@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import ChatWindow from "./components/ChatWindow";
 import ChatList from "./components/ChatList";
+import ChatWindow from "./components/ChatWindow";
 import Home from "./pages/Home";
+import FetchChats from "./FetchChats";
 
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -31,44 +31,46 @@ const App = () => {
   return (
     <Router>
       <div className="h-screen flex flex-col">
-        {/* <Header toggleSidebar={toggleSidebar} /> */}
         <div className="flex flex-grow overflow-hidden">
           <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
           <div className="flex flex-grow overflow-hidden">
-            <div
-              className={`${
-                isMobile ? "hidden" : "block"
-              } md:block w-1/4 border-r border-gray-200`}
-            >
-              <ChatList selectChat={selectChat} toggleSidebar={toggleSidebar} />
-            </div>
-            <div className="w-full md:w-3/4">
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    isMobile ? (
-                      selectedChat ? (
-                        <ChatWindow chatId={selectedChat} />
-                      ) : (
-                        <ChatList
-                          selectChat={selectChat}
-                          toggleSidebar={toggleSidebar}
-                        />
-                      )
-                    ) : (
-                      <Home selectChat={selectChat} />
-                    )
-                  }
-                />
-                <Route
-                  path="/chats/:chatId"
-                  element={<ChatWindow chatId={selectedChat} />}
-                />
-              </Routes>
-            </div>
+            {isMobile ? (
+              <div className="w-full">
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <ChatList
+                        selectChat={selectChat}
+                        toggleSidebar={toggleSidebar}
+                      />
+                    }
+                  />
+                  <Route path="/chats/:chatId" element={<ChatWindow />} />
+                </Routes>
+              </div>
+            ) : (
+              <>
+                <div className="w-1/4 border-r border-gray-200">
+                  <ChatList
+                    selectChat={selectChat}
+                    toggleSidebar={toggleSidebar}
+                  />
+                </div>
+                <div className="w-3/4">
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={<Home selectedChat={selectedChat} />}
+                    />
+                    <Route path="/chats/:chatId" element={<ChatWindow />} />
+                  </Routes>
+                </div>
+              </>
+            )}
           </div>
         </div>
+        <FetchChats />
       </div>
     </Router>
   );
